@@ -3,28 +3,52 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
+//--------------------------------------*****--------------------------------
+//--------------------------------------Class--------------------------------
+//--------------------------------------*****--------------------------------
 class Arr_operations
 {
     private:
         int *arr=NULL;
         int *reversed_arr;
         bool size_set;
-    public:
         int arr_size;
+        void setsize();
+    public:
         void setArr(int *ptr_to_base_user_array);
         void getArr();
         void getsize(int legnth);
-        void setsize();
         bool isPalindrome();
         int* reverse();
 };
 
-int main(void)
-{
-    int size_of_array;
-    Arr_operations array;
-}
 
+//----------------------------------------------------------***********---------------------------------------------------
+//----------------------------------------------------------*Functions*---------------------------------------------------
+//----------------------------------------------------------***********---------------------------------------------------
+
+
+void Arr_operations :: setArr(int *ptr_to_base_user_arr)
+{
+    
+    int i=0;
+    while(ptr_to_base_user_arr[i]!='\0')
+    {
+        i++;
+    }
+
+    getsize(i);
+    arr = (int*)malloc(sizeof(int)*arr_size);
+
+
+    for(i=0;i<arr_size;i++)
+    {
+        arr[i] = ptr_to_base_user_arr[i];
+    }
+    
+    
+}
 
 void Arr_operations :: getArr()
 {
@@ -52,6 +76,7 @@ void Arr_operations :: getsize(int legnth)
     arr_size = legnth;
     return;
 }
+
 void Arr_operations :: setsize()
 {
     std::cout << "\nEnter size of this array: ";
@@ -61,17 +86,6 @@ void Arr_operations :: setsize()
 }
 
 
-void Arr_operations :: setArr(int *ptr_to_base_user_arr)
-{
-    arr = ptr_to_base_user_arr;
-    int i;
-    for(i=0;;i++)
-    {
-        if(arr[i]=='\0')
-        break;
-    }
-    getsize(i);
-}
 
 bool Arr_operations :: isPalindrome()
 {
@@ -116,6 +130,26 @@ int* Arr_operations :: reverse()
         getArr();
         goto start;
     }
+
+}
+
+
+
+//------------------------------------------------------***************---------------------------------------------------------
+//------------------------------------------------------**Driver Code**---------------------------------------------------------
+//------------------------------------------------------**Driver Code**---------------------------------------------------------
+//------------------------------------------------------**Driver Code**---------------------------------------------------------
+//------------------------------------------------------***************---------------------------------------------------------
+
+
+
+int main(void)
+{
+    int size_of_array;
+    Arr_operations array;
+    int arrays[4] = {3,4,4,3};
+    array.setArr(arrays);
+    printf("%i",array.isPalindrome());
 
 }
 
