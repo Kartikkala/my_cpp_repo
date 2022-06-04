@@ -4,9 +4,9 @@
 #include <stdio.h>
 
 
-//--------------------------------------*****--------------------------------
-//--------------------------------------Class--------------------------------
-//--------------------------------------*****--------------------------------
+//--------------------------------------*****--------------------------------//
+//--------------------------------------Class--------------------------------//
+//--------------------------------------*****--------------------------------//
 class Arr_operations
 {
     private:
@@ -21,6 +21,7 @@ class Arr_operations
         void getsize(int legnth);
         bool isPalindrome();
         int* reverse();
+        int* sort();
 };
 
 
@@ -133,6 +134,32 @@ int* Arr_operations :: reverse()
 
 }
 
+int* Arr_operations :: sort()
+{
+    int smallest;
+    int temp;
+    for(int i=0;i<arr_size;i++)
+    {
+        smallest = arr[i];
+
+        for(int j=i;j<arr_size;j++)
+        {
+            if(smallest>=arr[j])
+            {
+                smallest = arr[j];
+            }
+            else
+            {
+                continue;
+            }
+            temp = arr[i];
+            arr[i] = smallest;
+            arr[j] = temp;
+        }
+    }
+    return arr;
+}
+
 
 
 //------------------------------------------------------***************---------------------------------------------------------
@@ -147,9 +174,9 @@ int main(void)
 {
     int size_of_array;
     Arr_operations array;
-    int arrays[4] = {3,4,4,3};
+    int arrays[4] = {3,2,4,3};
     array.setArr(arrays);
-    printf("%i",array.isPalindrome());
-
+    for(int i=0;i<4;i++)
+    printf("%d",array.sort()[i]);
 }
 
