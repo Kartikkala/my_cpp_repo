@@ -3,11 +3,13 @@
 #include <math.h>
 #include <unistd.h>
 
+#define EU 2.718281828459045
+
 
 
 long double f(long double x)
 {
-    return (2*(x*x*x))+(x*x)-(20*x)+12;
+    return cos(x)-(x*pow(EU,x));
 }
 
 long double regula(long double a,long double b)
