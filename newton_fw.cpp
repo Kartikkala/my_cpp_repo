@@ -1,49 +1,69 @@
-#include <iostream>
+// CPP Program to interpolate using
+// newton forward interpolation
+#include <bits/stdc++.h>
+using namespace std;
 
-void print_arr(int *arr, int size)
+// calculating u mentioned in the formula
+float u_cal(float u, int n)
 {
-    for(int i=0;i<size;i++)
-    {
-        std::cout<<arr[i]<<"\n";
-    }
+	float temp = u;
+	for (int i = 1; i < n; i++)
+		temp = temp * (u - i);
+	return temp;
 }
 
-void array_copy(int *first, int *second, int size_first, int size_sec)
+// calculating factorial of given number n
+int fact(int n)
 {
-    int size;
-    if(size_first>size_sec)
-        size = size_sec;
-    else
-        size = size_first;
-    for(int i=0;i<size;i++)
-    {
-        second[i] = first[i];
-    }
+	int f = 1;
+	for (int i = 2; i <= n; i++)
+		f *= i;
+	return f;
 }
 
-int newton_fw(int *x, int *y, int size)
+int main()
 {
-    int *d_y = (int *)malloc(sizeof(int)*(size-1));
-    int sub_arr_size = size-1;
+	// Number of values given
+	int n = 4;
+	float x[] = { 45, 50, 55, 60 };
+	
+	// y[][] is used for difference table
+	// with y[][0] used for input
+	float y[n][n];
+	y[0][0] = 0.7071;
+	y[1][0] = 0.7660;
+	y[2][0] = 0.8192;
+	y[3][0] = 0.8660;
 
-    for(int k=0;k<3;k++)
-    {
-        for(int i=0,j=0;i<(size-1);i++,j++)
-        {
-            d_y[j] = y[i+1]-y[i];
-        }
-        sub_arr_size--;
+	// Calculating the forward difference
+	// table
+	for (int i = 1; i < n; i++) {
+		for (int j = 0; j < n - i; j++)
+			y[j][i] = y[j + 1][i - 1] - y[j][i - 1];
+	}
 
+	// Displaying the forward difference table
+	for (int i = 0; i < n; i++) {
+		cout << setw(4) << x[i]
+			<< "\t";
+		for (int j = 0; j < n - i; j++)
+			cout << setw(4) << y[i][j]
+				<< "\t";
+		cout << endl;
+	}
 
-        print_arr(d_y, size-1);
-    }
-    return 0;
-}
+	// Value to interpolate at
+	float value = 52;
 
+	// initializing u and sum
+	float sum = y[0][0];
+	float u = (value - x[0]) / (x[1] - x[0]);
+	for (int i = 1; i < n; i++) {
+		sum = sum + (u_cal(u, i) * y[0][i]) /
+								fact(i);
+	}
 
-int main(void)
-{
-    int x[4] = {5,10,15,20}; 
-    int y[4] = {222,444,555,666}; 
-    newton_fw(x,y,4);
+	cout << "\n Value at " << value << " is "
+		<< sum << endl;
+	return 0;
 }
