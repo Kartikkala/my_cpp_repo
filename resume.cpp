@@ -5,6 +5,7 @@
 using std::vector;
 using std::string;
 
+
 int max(std::vector<int> &arr)
 {
     int max = INT32_MIN;
@@ -425,6 +426,7 @@ vector<vector<int>> generateMatrix(int n){
 }
 
 
+
 int main(void)
 {
 
@@ -440,6 +442,4 @@ int main(void)
         }
         std::cout<<"\n";
     }
-
-
 }
