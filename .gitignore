@@ -1,2 +1,5 @@
 .vscode/*
-
+*.sql
+*.txt
+*.dat
+*.deb
