@@ -12,7 +12,7 @@ class BinarySearchTree{
         struct node *root = nullptr;
         void insert(int data, struct node **root)
         {
-            if(root == nullptr)
+            if(*root == nullptr)
             {
                 *root = (struct node*)malloc(sizeof(struct node));
                 (*root)->left = nullptr;
@@ -22,14 +22,14 @@ class BinarySearchTree{
             }
             if((*root)->data > data)
             {
-                insert(data, &(*root)->left);
+                return insert(data, &(*root)->left);
             }
             insert(data, &(*root)->right);
         }
 
         void inOrder(struct node **root)
         {
-            if(root == nullptr)
+            if(*root == nullptr)
                 return;
             inOrder(&(*root)->left);
             std::cout << (*root)->data << std::endl;
