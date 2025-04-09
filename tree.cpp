@@ -27,6 +27,53 @@ class BinarySearchTree{
             insert(data, &(*root)->right);
         }
 
+        void remove(int data, node **root)
+        {
+            if(*root == nullptr)
+                return;
+            if(data < (*root)->data)
+            {
+                remove(data, &(*root)->left);
+            }
+            else if(data > (*root)->data)
+            {
+                remove(data, &(*root)->right);
+            }
+            else
+            {
+                if(!(*root)->right && !(*root)->left)
+                {
+                    // No children
+                    free(*root);
+                    *root = nullptr;
+                    return;
+                }
+                else if(!(*root)->left)
+                {
+                    struct node *temp = (*root)->right;
+                    free(*root);
+                    *root = temp;
+                    return;
+                }
+                else if(!(*root)->right)
+                {
+                    struct node *temp = (*root)->left;
+                    free(*root);
+                    *root = temp;
+                    return;
+                }
+                else{
+                    struct node *succesor = (*root)->right;
+                    while (succesor->left)
+                    {
+                        succesor = succesor->left;
+                    }
+                    (*root)->data = succesor->data;
+                    remove(succesor->data, &(*root)->right);
+                }
+            }
+        }
+
         void inOrder(struct node **root)
         {
             if(*root == nullptr)
@@ -51,6 +98,11 @@ class BinarySearchTree{
             return this;
         }
 
+        BinarySearchTree* remove(int value) {
+            remove(value, &this->root);
+            return this;
+        }
+
         struct node * getRoot()
         {
             return this->root;
@@ -69,5 +121,5 @@ class BinarySearchTree{
 int main(void)
 {
     BinarySearchTree bst(2);
-    bst.insert(4)->insert(10)->insert(1)->insert(12)->inOrder();
+    bst.insert(4)->insert(10)->insert(1)->insert(12)->insert(6)->insert(8)->insert(25)->remove(4)->inOrder();
 }
