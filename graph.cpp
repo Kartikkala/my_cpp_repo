@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <queue>
+#include "queue_ca.cpp"
 #include "HashMap.cpp"
 
 template <typename A>
@@ -26,18 +26,18 @@ public:
     }
 
     void bfs(A start) {
-        std::queue<A> q;
-        q.push(start);
+        Queue<A> q;
+        q.enqueue(start);
         visited[start] = true;
 
         while (!q.empty()) {
             A current = q.front();
-            q.pop();
+            q.dequeue();
             std::cout << current;
 
             for (auto &neighbor : g[current]) {
                 if (!visited[neighbor.first]) {
-                    q.push(neighbor.first);
+                    q.enqueue(neighbor.first);
                     visited[neighbor.first] = true;
                 }
             }
