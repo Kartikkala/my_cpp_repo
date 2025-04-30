@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 template <typename Key, typename Value>
 struct HashNode {
@@ -31,7 +32,7 @@ public:
             table[i] = nullptr;
     }
 
-    void push(Key key, Value value) {
+    void push_back(Key key, Value value) {
         int index = hash(key);
         HashNode<Key, Value>* head = table[index];
 
@@ -47,6 +48,18 @@ public:
         table[index] = newNode;
     }
 
+    void clear() {
+        for (int i = 0; i < TABLE_SIZE; ++i) {
+            HashNode<Key, Value>* head = table[i];
+            while (head) {
+                HashNode<Key, Value>* temp = head;
+                head = head->next;
+                delete temp;
+            }
+            table[i] = nullptr;
+        }
+    }
+
     bool has(Key key, Value value) {
         int index = hash(key);
         HashNode<Key, Value>* head = table[index];
@@ -57,6 +70,35 @@ public:
             head = head->next;
         }
         return false;
+    }
+
+    Value& operator[](Key key) {
+        int index = hash(key);
+        HashNode<Key, Value>* head = table[index];
+    
+        while (head) {
+            if (head->key == key)
+                return head->value;
+            head = head->next;
+        }
+
+        HashNode<Key, Value>* newNode = new HashNode<Key, Value>(key, Value());
+        newNode->next = table[index];
+        table[index] = newNode;
+        return newNode->value;
+    }
+
+    
+    Value &get(Key key) {
+        int index = hash(key);
+        HashNode<Key, Value>* head = table[index];
+
+        while (head) {
+            if (head->key == key) return head->value;
+            head = head->next;
+        }
+
+        throw std::runtime_error("Key not found");
     }
 
     ~HashMap() {
@@ -71,17 +113,18 @@ public:
     }
 };
 
-int main() {
-    HashMap<char, int> map;
+// int main() {
+//     HashMap<char, std::vector<char>> map;
 
-    map.push('A', 10);
-    map.push('A', 20);
-    map.push('B', 30);
+//     map.push('A', std::vector<char>({'A', 'B'}));
+//     map.push('A', std::vector<char>({'C', 'D'}));
+//     map.push('B', std::vector<char>({'E', 'F'}));
 
-    std::cout << map.has('A', 10) << std::endl; // 1 (true)
-    std::cout << map.has('A', 15) << std::endl; // 0 (false)
-    std::cout << map.has('B', 30) << std::endl; // 1
-    std::cout << map.has('C', 40) << std::endl; // 0
+//     std::vector<char> array = map.get('B');
+//     for(char a: array)
+//     {
+//         std::cout << a << std::endl;
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
