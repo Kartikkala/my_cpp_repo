@@ -1,33 +1,54 @@
 #include <iostream>
 
+template <typename A>
 struct node
 {
-    struct node *left;
-    struct node *right;
-    int data;
+    struct node<A> *left;
+    struct node<A> *right;
+    A data;
 };
 
+template <typename A>
 class BinarySearchTree{
     private:
-        struct node *root = nullptr;
-        void insert(int data, struct node **root)
+        struct node<A> *root = nullptr;
+        void insert(int data, struct node<A> **root)
         {
             if(*root == nullptr)
             {
-                *root = (struct node*)malloc(sizeof(struct node));
+                *root = (struct node<A>*)malloc(sizeof(struct node<A>));
                 (*root)->left = nullptr;
                 (*root)->right = nullptr;
                 (*root)->data = data;
                 return;
             }
-            if((*root)->data > data)
-            {
-                return insert(data, &(*root)->left);
+            if ((*root)->data > data) {
+                insert(data, &(*root)->left);
+            } else {
+                insert(data, &(*root)->right);
             }
-            insert(data, &(*root)->right);
         }
 
-        void remove(int data, node **root)
+        bool has(int data, node<A> *root)
+        {
+            if(root == nullptr)
+                return false;
+            if(root->data == data)
+            {
+                return true;
+            }
+            else if(root->data < data)
+            {
+                return has(data, root->right);
+            }
+            else if(root->data > data){
+                return has(data, root->left);
+            }
+            return false;
+        }
+        
+
+        void remove(A data, node<A> **root)
         {
             if(*root == nullptr)
                 return;
@@ -50,20 +71,20 @@ class BinarySearchTree{
                 }
                 else if(!(*root)->left)
                 {
-                    struct node *temp = (*root)->right;
+                    struct node<A> *temp = (*root)->right;
                     free(*root);
                     *root = temp;
                     return;
                 }
                 else if(!(*root)->right)
                 {
-                    struct node *temp = (*root)->left;
+                    struct node<A> *temp = (*root)->left;
                     free(*root);
                     *root = temp;
                     return;
                 }
                 else{
-                    struct node *succesor = (*root)->right;
+                    struct node<A> *succesor = (*root)->right;
                     while (succesor->left)
                     {
                         succesor = succesor->left;
@@ -74,7 +95,7 @@ class BinarySearchTree{
             }
         }
 
-        void inOrder(struct node **root)
+        void inOrder(struct node<A> **root)
         {
             if(*root == nullptr)
                 return;
@@ -84,26 +105,37 @@ class BinarySearchTree{
             return;
         }
     public:
-        BinarySearchTree(int data)
+        BinarySearchTree(A data)
         {
-            this->root = (struct node*)malloc(sizeof(node));
+            this->root = (struct node<A>*)malloc(sizeof(node<A>));
             this->root->data = data;
             this->root->left = nullptr;
             this->root->right = nullptr;
         }
 
-        BinarySearchTree *insert(int data)
+        BinarySearchTree()
+        {
+
+        }
+
+        BinarySearchTree *insert(A data)
         {
             this->insert(data, &this->root);
             return this;
         }
 
-        BinarySearchTree* remove(int value) {
+        bool has(A data)
+        {
+            return this->has(data, this->root);
+        }
+
+        BinarySearchTree* remove(A value) {
             remove(value, &this->root);
+            std::cout << "\nRemoved node: " << value<< std::endl << std::endl;
             return this;
         }
 
-        struct node * getRoot()
+        struct node<A> * getRoot()
         {
             return this->root;
         }
@@ -118,8 +150,8 @@ class BinarySearchTree{
 };
 
 
-int main(void)
-{
-    BinarySearchTree bst(45);
-    bst.insert(25)->insert(65)->insert(15)->insert(35)->insert(55)->insert(75)->remove(25)->inOrder();
-}
+// int main(void)
+// {
+//     BinarySearchTree<int> bst(45);
+//     bst.insert(25)->insert(65)->insert(15)->insert(35)->insert(55)->insert(75)->inOrder()->remove(25)->inOrder();
+// }
