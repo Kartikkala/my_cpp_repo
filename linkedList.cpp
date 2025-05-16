@@ -66,6 +66,17 @@ class LinkedList{
             return this;
         }
 
+        bool find(int value)
+        {
+            node *temp = this->list;
+            while (temp->next != nullptr)
+            {
+                if(temp->data == value)
+                    return true;
+            }
+            return false;
+        }
+
         LinkedList* displayAllElements()
         {
             node *temp = this->list;
